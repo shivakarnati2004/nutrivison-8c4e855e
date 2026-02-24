@@ -1,0 +1,10 @@
+project_id = "ykxqbrrblfvijzfsjdxl"
+
+[functions.analyze-food]
+verify_jwt = true
+
+[functions.text-food-search]
+verify_jwt = true
+
+[functions.nutrition-chat]
+verify_jwt = true

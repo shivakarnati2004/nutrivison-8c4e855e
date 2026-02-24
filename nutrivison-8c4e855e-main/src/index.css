@@ -1,0 +1,234 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 160 84% 8%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 160 84% 8%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 160 84% 8%;
+
+    --primary: 160 84% 39%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 142 76% 96%;
+    --secondary-foreground: 160 84% 8%;
+
+    --muted: 142 30% 96%;
+    --muted-foreground: 160 20% 45%;
+
+    --accent: 25 95% 53%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 142 30% 90%;
+    --input: 142 30% 90%;
+    --ring: 160 84% 39%;
+
+    --radius: 0.75rem;
+
+    --gradient-primary: linear-gradient(135deg, hsl(160 84% 39%), hsl(160 84% 49%));
+    --gradient-hero: linear-gradient(135deg, hsl(160 84% 39%) 0%, hsl(170 70% 50%) 50%, hsl(25 95% 53%) 100%);
+    --shadow-soft: 0 4px 20px -2px hsl(160 84% 39% / 0.1);
+    --shadow-glow: 0 0 40px hsl(160 84% 49% / 0.3);
+    
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .dark {
+    --background: 160 50% 5%;
+    --foreground: 142 30% 95%;
+
+    --card: 160 40% 8%;
+    --card-foreground: 142 30% 95%;
+
+    --popover: 160 40% 8%;
+    --popover-foreground: 142 30% 95%;
+
+    --primary: 160 84% 45%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 160 30% 15%;
+    --secondary-foreground: 142 30% 95%;
+
+    --muted: 160 30% 15%;
+    --muted-foreground: 142 30% 65%;
+
+    --accent: 25 95% 53%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 160 30% 18%;
+    --input: 160 30% 18%;
+    --ring: 160 84% 45%;
+
+    --gradient-primary: linear-gradient(135deg, hsl(160 84% 35%), hsl(160 84% 45%));
+    --gradient-hero: linear-gradient(135deg, hsl(160 84% 35%) 0%, hsl(170 70% 45%) 50%, hsl(25 95% 48%) 100%);
+    --shadow-soft: 0 4px 20px -2px hsl(160 84% 35% / 0.2);
+    --shadow-glow: 0 0 40px hsl(160 84% 45% / 0.4);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Social animations */
+@keyframes pop-in {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  80% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-up {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes pulse-soft {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes bounce-in {
+  0% {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+.animate-pop-in {
+  animation: pop-in 0.3s ease-out forwards;
+}
+
+.animate-slide-up {
+  animation: slide-up 0.3s ease-out forwards;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out forwards;
+}
+
+.animate-pulse-soft {
+  animation: pulse-soft 2s ease-in-out infinite;
+}
+
+.animate-bounce-in {
+  animation: bounce-in 0.5s ease-out forwards;
+}
+
+.animate-shake {
+  animation: shake 0.5s ease-in-out;
+}
+
+/* Reaction button hover effects */
+.reaction-btn {
+  transition: all 0.2s ease;
+}
+
+.reaction-btn:hover {
+  transform: scale(1.2);
+}
+
+.reaction-btn:active {
+  transform: scale(0.95);
+}
+
+/* Comment slide animation */
+.comment-item {
+  animation: slide-up 0.3s ease-out forwards;
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .animate-pop-in,
+  .animate-slide-up,
+  .animate-fade-in,
+  .animate-pulse-soft,
+  .animate-bounce-in,
+  .animate-shake,
+  .comment-item {
+    animation: none;
+  }
+  
+  .reaction-btn:hover {
+    transform: none;
+  }
+}
+
+/* Hide scrollbar */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
