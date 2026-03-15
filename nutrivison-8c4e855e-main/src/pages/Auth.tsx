@@ -60,21 +60,26 @@ const Auth = () => {
       }
     });
 
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
+    // Listen for auth changes — do NOT use async/await inside the callback
+    // to avoid deadlocks with Supabase's internal auth lock.
+    const checkProfileAndRedirect = async (userId: string) => {
+      const { data: profile } = await supabase
+        .from("user_profiles")
+        .select("onboarding_completed")
+        .eq("user_id", userId)
+        .single();
+
+      if (!profile || !profile.onboarding_completed) {
+        navigate("/onboarding");
+      } else {
+        navigate("/dashboard");
+      }
+    };
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === "SIGNED_IN" && session) {
-        // Check if onboarding is completed
-        const { data: profile } = await supabase
-          .from("user_profiles")
-          .select("onboarding_completed")
-          .eq("user_id", session.user.id)
-          .single();
-        
-        if (!profile || !profile.onboarding_completed) {
-          navigate("/onboarding");
-        } else {
-          navigate("/dashboard");
-        }
+        // Fire-and-forget — no await here
+        checkProfileAndRedirect(session.user.id);
       }
     });
 

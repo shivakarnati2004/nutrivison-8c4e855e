@@ -17,6 +17,7 @@ import { SocialFeed } from "@/components/social/SocialFeed";
 const Dashboard = () => {
   const [user, setUser] = useState<any>(null);
   const [profile, setProfile] = useState<any>(null);
+  const [isAuthReady, setIsAuthReady] = useState(false);
   const [activeTab, setActiveTab] = useState<"capture" | "history" | "analytics" | "exercise" | "social">("capture");
   const [refreshKey, setRefreshKey] = useState(0);
   const [showMealBuilder, setShowMealBuilder] = useState(false);
@@ -28,26 +29,30 @@ const Dashboard = () => {
     supabase.auth.getSession().then(async ({ data: { session } }) => {
       if (!session) {
         navigate("/auth");
+        setIsAuthReady(true);
         return;
       }
-      
+
       setUser(session.user);
-      
+
       // Check if onboarding is completed
-      const { data: profileData, error } = await supabase
+      const { data: profileData } = await supabase
         .from("user_profiles")
         .select("*")
         .eq("user_id", session.user.id)
         .single();
-      
+
       if (!profileData || !profileData.onboarding_completed) {
         navigate("/onboarding");
+        setIsAuthReady(true);
         return;
       }
-      
+
       setProfile(profileData);
+      setIsAuthReady(true);
     });
 
+    // No async/await inside onAuthStateChange to avoid deadlocks
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === "SIGNED_OUT" || !session) {
         navigate("/auth");
@@ -59,24 +64,16 @@ const Dashboard = () => {
     return () => subscription.unsubscribe();
   }, [navigate]);
 
-  const handleSignOut = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Failed to sign out. Please try again.",
-      });
-    }
-  };
-
-  const handleFoodSaved = () => {
-    setRefreshKey(prev => prev + 1);
-    toast({
-      title: "Food logged!",
-      description: "Your entry has been saved to history.",
-    });
-  };
+  if (!isAuthReady) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="flex flex-col items-center gap-3">
+          <Sparkles className="h-8 w-8 text-primary animate-pulse" />
+          <p className="text-muted-foreground text-sm">Loading...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!user || !profile) return null;
 
