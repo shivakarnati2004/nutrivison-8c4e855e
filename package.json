@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "cd nutrivison-8c4e855e-main && bun run dev",
-    "build": "cd nutrivison-8c4e855e-main && bun run build",
-    "preview": "cd nutrivison-8c4e855e-main && bun run preview"
+    "dev": "cd nutrivison-8c4e855e-main && bun install && bunx vite --host",
+    "build": "cd nutrivison-8c4e855e-main && bun install && bunx vite build",
+    "preview": "cd nutrivison-8c4e855e-main && bunx vite preview"
   }
 }
