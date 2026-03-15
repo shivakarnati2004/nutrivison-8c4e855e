@@ -1,0 +1,11 @@
+{
+  "name": "nutrivision",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "cd nutrivison-8c4e855e-main && bun run dev",
+    "build": "cd nutrivison-8c4e855e-main && bun run build",
+    "preview": "cd nutrivison-8c4e855e-main && bun run preview"
+  }
+}
